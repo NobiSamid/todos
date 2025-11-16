@@ -1,0 +1,1407 @@
+{
+	"info": {
+		"_postman_id": "59edfeb1-242f-42c9-b894-035d8fea30b0",
+		"name": "My Todo App APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26697801",
+		"_collection_link": "https://www.postman.com/pioneer-alpha-team/workspace/my-todo-app/collection/26697801-59edfeb1-242f-42c9-b894-035d8fea30b0?action=share&source=collection_link&creator=26697801"
+	},
+	"item": [
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "Sign Up",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "first_name",
+									"value": "John",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "Doe",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "john.doe@example.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{localhost}}/api/users/signup/",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"signup",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Sign Up",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "first_name",
+											"value": "John",
+											"type": "text"
+										},
+										{
+											"key": "last_name",
+											"value": "Doe",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "john.doe@example.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "123456",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}/api/users/signup/",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"signup",
+										""
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 09 Nov 2025 18:00:18 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.11"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, origin"
+								},
+								{
+									"key": "Allow",
+									"value": "POST, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "77"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"email\": \"john.doe@example.com\",\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\"\n}"
+						},
+						{
+							"name": "Sign Up(400: password < 6 ch)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "first_name",
+											"value": "John",
+											"type": "text"
+										},
+										{
+											"key": "last_name",
+											"value": "Doe",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "john.doe@example.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "12345",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}/api/users/signup/",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"signup",
+										""
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 09 Nov 2025 17:57:59 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.11"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, origin"
+								},
+								{
+									"key": "Allow",
+									"value": "POST, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "75"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"detail\": \"Ensure this field has at least 6 characters. (field: password)\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse JSON response\r",
+									"let response = pm.response.json();\r",
+									"\r",
+									"// Check if tokens exist\r",
+									"if (response.access && response.refresh) {\r",
+									"    // Store both tokens in environment variables\r",
+									"    pm.environment.set(\"access_token\", response.access);\r",
+									"    pm.environment.set(\"refresh_token\", response.refresh);\r",
+									"\r",
+									"    console.log(\"✅ Tokens saved to environment variables.\");\r",
+									"} else {\r",
+									"    console.warn(\"⚠️ No tokens found in response.\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "john.doe@example.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{server}}/api/auth/login/",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Login",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "john.doe@example.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "123456",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}/api/auth/login/",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"login",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 09 Nov 2025 18:02:35 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.11"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, origin"
+								},
+								{
+									"key": "Allow",
+									"value": "POST, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "489"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"refresh\": \"{{vault:json-web-token}}\",\n    \"access\": \"{{vault:json-web-token}}\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "old_password",
+									"value": "123456",
+									"type": "text"
+								},
+								{
+									"key": "new_password",
+									"value": "1234567",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{localhost}}/api/users/change-password/",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"change-password",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Change Password",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "old_password",
+											"value": "123456",
+											"type": "text"
+										},
+										{
+											"key": "new_password",
+											"value": "1234567",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}/api/users/change-password/",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"change-password",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 09 Nov 2025 18:43:48 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.11"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, origin"
+								},
+								{
+									"key": "Allow",
+									"value": "POST, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "43"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"detail\": \"Password updated successfully.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/api/users/me/",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Profile",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}/api/users/me/",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"me",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 09 Nov 2025 18:14:53 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.11"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, origin"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, PUT, PATCH, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "272"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [
+								{
+									"expires": "Invalid Date",
+									"domain": "",
+									"path": ""
+								}
+							],
+							"body": "{\n    \"id\": 1,\n    \"email\": \"yamin@example.com\",\n    \"first_name\": \"Yamin\",\n    \"last_name\": \"Mahmud\",\n    \"address\": \"House 12, Road 3, Dhaka\",\n    \"contact_number\": \"+8801765432109\",\n    \"birthday\": \"2001-09-12\",\n    \"profile_image\": \"http://127.0.0.1:8000/profiles/user.png\",\n    \"bio\": \"Love learning new tech every day.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "first_name",
+									"value": "Yamin",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "Mahmud",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "House 12, Road 3, Dhaka",
+									"type": "text"
+								},
+								{
+									"key": "contact_number",
+									"value": "+8801765432109",
+									"type": "text"
+								},
+								{
+									"key": "birthday",
+									"value": "2001-09-12",
+									"type": "text"
+								},
+								{
+									"key": "bio",
+									"value": "Love learning new tech every day.",
+									"type": "text"
+								},
+								{
+									"key": "profile_image",
+									"type": "file",
+									"src": "/C:/Users/fahim/Downloads/user.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{localhost}}/api/users/me/",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Update profile",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "first_name",
+											"value": "Yamin",
+											"type": "text"
+										},
+										{
+											"key": "last_name",
+											"value": "Mahmud",
+											"type": "text"
+										},
+										{
+											"key": "address",
+											"value": "House 12, Road 3, Dhaka",
+											"type": "text"
+										},
+										{
+											"key": "contact_number",
+											"value": "+8801765432109",
+											"type": "text"
+										},
+										{
+											"key": "birthday",
+											"value": "2001-09-12",
+											"type": "text"
+										},
+										{
+											"key": "bio",
+											"value": "Love learning new tech every day.",
+											"type": "text"
+										},
+										{
+											"key": "profile_image",
+											"type": "file",
+											"src": "/C:/Users/fahim/Downloads/user.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}/api/users/me/",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"me",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 09 Nov 2025 18:34:05 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.11"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, origin"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, PUT, PATCH, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "338"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 3,\n    \"email\": \"john.doe@example.com\",\n    \"first_name\": \"Yamin\",\n    \"last_name\": \"Mahmud\",\n    \"address\": \"House 12, Road 3, Dhaka\",\n    \"contact_number\": \"+8801765432109\",\n    \"birthday\": \"2001-09-12\",\n    \"profile_image\": \"https://pioneer-alpha-website-django-s3-bucket-new-2.s3.amazonaws.com/todo-app/media/profiles/user.png\",\n    \"bio\": \"Love learning new tech every day.\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Todos",
+			"item": [
+				{
+					"name": "Get todos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/api/todos/?search=1",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"todos",
+								""
+							],
+							"query": [
+								{
+									"key": "is_completed",
+									"value": "true",
+									"description": "(optional)",
+									"disabled": true
+								},
+								{
+									"key": "priority",
+									"value": "extreme",
+									"description": "(optional)",
+									"disabled": true
+								},
+								{
+									"key": "todo_date",
+									"value": "2025-11-15",
+									"description": "(optional)",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "1",
+									"description": "(optional)"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get todos",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}/api/todos/?todo_date=2025-11-15&search=test",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"todos",
+										""
+									],
+									"query": [
+										{
+											"key": "is_completed",
+											"value": "true",
+											"description": "(optional)",
+											"disabled": true
+										},
+										{
+											"key": "priority",
+											"value": "extreme",
+											"description": "(optional)",
+											"disabled": true
+										},
+										{
+											"key": "todo_date",
+											"value": "2025-11-15",
+											"description": "(optional)"
+										},
+										{
+											"key": "search",
+											"value": "test",
+											"description": "(optional)"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 09 Nov 2025 18:57:39 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.11"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, origin"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, POST, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "761"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [
+								{
+									"expires": "Invalid Date",
+									"domain": "",
+									"path": ""
+								}
+							],
+							"body": "{\n    \"count\": 3,\n    \"next\": null,\n    \"previous\": null,\n    \"results\": [\n        {\n            \"id\": 1,\n            \"title\": \"test-1(updated)\",\n            \"description\": \"Monthly financial report\",\n            \"priority\": \"moderate\",\n            \"is_completed\": true,\n            \"position\": 1,\n            \"todo_date\": \"2025-11-15\",\n            \"created_at\": \"2025-11-09T18:52:41.723930Z\",\n            \"updated_at\": \"2025-11-09T18:54:52.241995Z\"\n        },\n        {\n            \"id\": 2,\n            \"title\": \"test-2\",\n            \"description\": \"Monthly financial report\",\n            \"priority\": \"moderate\",\n            \"is_completed\": false,\n            \"position\": 2,\n            \"todo_date\": \"2025-11-15\",\n            \"created_at\": \"2025-11-09T18:55:37.556474Z\",\n            \"updated_at\": \"2025-11-09T18:55:37.556474Z\"\n        },\n        {\n            \"id\": 3,\n            \"title\": \"test-3\",\n            \"description\": \"Monthly financial report\",\n            \"priority\": \"moderate\",\n            \"is_completed\": false,\n            \"position\": 3,\n            \"todo_date\": \"2025-11-15\",\n            \"created_at\": \"2025-11-09T18:55:42.408634Z\",\n            \"updated_at\": \"2025-11-09T18:55:42.408634Z\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Create todo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "test-2",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Monthly financial report",
+									"type": "text"
+								},
+								{
+									"key": "priority",
+									"value": "moderate",
+									"description": "extreme / moderate / low",
+									"type": "text"
+								},
+								{
+									"key": "todo_date",
+									"value": "2025-11-15",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{localhost}}/api/todos/",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"todos",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create todo",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "test-1",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Monthly financial report",
+											"type": "text"
+										},
+										{
+											"key": "priority",
+											"value": "moderate",
+											"description": "extreme / moderate / low",
+											"type": "text"
+										},
+										{
+											"key": "todo_date",
+											"value": "2025-11-15",
+											"type": "text"
+										}
+									],
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}/api/todos/",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"todos",
+										""
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 09 Nov 2025 18:52:41 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.11"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, origin"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, POST, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "233"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [
+								{
+									"expires": "Invalid Date",
+									"domain": "",
+									"path": ""
+								}
+							],
+							"body": "{\n    \"id\": 1,\n    \"title\": \"test-1\",\n    \"description\": \"Monthly financial report\",\n    \"priority\": \"moderate\",\n    \"is_completed\": false,\n    \"position\": 1,\n    \"todo_date\": \"2025-11-15\",\n    \"created_at\": \"2025-11-09T18:52:41.723930Z\",\n    \"updated_at\": \"2025-11-09T18:52:41.723930Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update todo",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "test-1(updated)",
+									"description": "(optional)",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "description",
+									"value": "Monthly financial report",
+									"description": "(optional)",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "priority",
+									"value": "moderate",
+									"description": "extreme / moderate / low (optional)",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "todo_date",
+									"value": "2025-11-15",
+									"description": "(optional)",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "is_completed",
+									"value": "true",
+									"description": "true/false (optional)",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "position",
+									"value": "1",
+									"description": "(optional)",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{localhost}}/api/todos/3/",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"todos",
+								"3",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Update todo",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "test-1(updated)",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Monthly financial report",
+											"type": "text"
+										},
+										{
+											"key": "priority",
+											"value": "moderate",
+											"description": "extreme / moderate / low",
+											"type": "text"
+										},
+										{
+											"key": "todo_date",
+											"value": "2025-11-15",
+											"type": "text"
+										},
+										{
+											"key": "is_completed",
+											"value": "true",
+											"description": "true/false",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}/api/todos/1/",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"todos",
+										"1",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 09 Nov 2025 18:54:52 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.11"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, origin"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, PUT, PATCH, DELETE, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "241"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"title\": \"test-1(updated)\",\n    \"description\": \"Monthly financial report\",\n    \"priority\": \"moderate\",\n    \"is_completed\": true,\n    \"position\": 1,\n    \"todo_date\": \"2025-11-15\",\n    \"created_at\": \"2025-11-09T18:52:41.723930Z\",\n    \"updated_at\": \"2025-11-09T18:54:52.241995Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete todo",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/api/todos/4/",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"todos",
+								"4",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Delete todo",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}/api/todos/4/",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"todos",
+										"4",
+										""
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 09 Nov 2025 18:59:11 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.11"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, origin"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, PUT, PATCH, DELETE, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			]
+		}
+	]
+}

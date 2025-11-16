@@ -36,3 +36,11 @@ export type PaginatedTodos = {
   previous: string | null;
   results: Todo[];
 };
+
+export type GetTodosParams = {
+  search?: string;
+  priority?: string;
+  is_completed?: boolean | string;
+  todo_date?: string;
+  page?: number;
+};

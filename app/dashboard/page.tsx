@@ -2,11 +2,9 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from "next/navigation";
-
 import AccountInfo from './comp/AccountInfo';
-import { Todo } from './comp/TodoList';
-import { getTodos } from '@/services/TodoApi';
 import dynamic from "next/dynamic";
+
 const TodoList = dynamic(() => import("./comp/TodoList"), { ssr: false });
 
 const tabs = [
@@ -18,7 +16,7 @@ const tabs = [
 function Dashboard() {
   
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState("create");
+  const [activeTab, setActiveTab] = useState("TodoList");
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");

@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { SignupPayload } from "@/types/type";
@@ -104,6 +106,12 @@ export default function SignUp() {
           {loading ? "Creating..." : "Sign up"}
         </button>
       </form>
+       <p className="mt-4 text-center">
+        Already have an account?{" "}
+        <Link href="/login" className="text-indigo-600 underline">
+          Log in
+        </Link>
+      </p>
     </main>
   );
 }

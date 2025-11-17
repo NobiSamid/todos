@@ -5,6 +5,7 @@ import { Todo } from "@/types/type";
 import React, { useEffect, useState } from "react";
 import TodoCard from "./TodoCard";
 import NewTodoModal from "@/components/TodoModal";
+import { Router } from "next/router";
 
 const TodoList = ({ initialFilterCompleted = true }: { initialFilterCompleted?: boolean }) => {
   const [todos, setTodos] = useState<Todo[]>([]);

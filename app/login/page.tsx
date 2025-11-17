@@ -8,6 +8,7 @@ import {
   IconBrandOnlyfans,
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation"; // Next.js App Router
+import Link from "next/link";
 
 type FormState = {
   email: string;
@@ -36,7 +37,7 @@ export default function LogIn() {
       // Optional: call me endpoint to fetch user profile and set app state
       // const profile = await api.get('/api/users/me/');
       console.log("try er vetore hoise")
-      router.push("/dashboard");
+      router.push("/");
     } catch (err: any) {
       console.error(err);
       setError(err.message || "Login failed");
@@ -83,6 +84,12 @@ export default function LogIn() {
           {loading ? "Signing in..." : "Sign in"}
         </button>
       </form>
+            <p className="mt-4 text-center">
+        Don`&apos`t have any account?{" "}
+        <Link href="/signup" className="text-indigo-600 underline">
+          Sign up
+        </Link>
+      </p>
     </div>
   );
 }

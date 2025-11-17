@@ -1,15 +1,16 @@
 "use client";
 
-import LogIn from "./authentication/LogIn";
-import SignUp from "./authentication/SignUp";
+import Dashboard from "./dashboard/Dashboard";
+// import Sample from "./dashboard/Sample";
+import LogIn from "./login/page";
+import SignUp from "./signup/page";
+
 
 export default function Home() {
   return (
    <main>
     <div>
-      <h1>wassaaaap</h1>
-      <LogIn />
-      <SignUp />
+      <Dashboard />
     </div>
    </main>
   );

@@ -1,5 +1,8 @@
-import { LoginResponse, SignupPayload, SignupResponse } from "@/types/type";
+"use client";
 
+import { LoginResponse, SignupPayload, SignupResponse } from "@/types/type";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 /// sign up
 export async function signupUser(payload: SignupPayload): Promise<SignupResponse> {
   const form = new FormData();
@@ -62,3 +65,4 @@ export function clearTokens() {
     localStorage.removeItem("refresh_token");
   }
 }
+

@@ -1,129 +1,176 @@
-import React, { useState } from 'react'
+"use client";
 
-const AccountInfo = () => {
-const [newProduct, setNewProduct] = useState({
-		name: "",
-		description: "",
-		price: "",
-		category: "",
-		image: "",
-	});
+import { updateProfile } from '@/services/auth';
+import { UpdateProfilePayload } from '@/types/type';
+import React, { useRef, useState } from 'react'
+import ChangePasswordModal from './ChangePassModal';
 
-	// const { createProduct, loading } = useProductStore();
-  const loading = false;
-
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		try {
-			// await createProduct(newProduct);
-			setNewProduct({ name: "", description: "", price: "", category: "", image: "" });
-		} catch {
-			console.log("error creating a product");
-		}
+type Props = {
+	initial?: {
+		first_name?: string;
+		last_name?: string;
+		address?: string;
+		contact_number?: string;
+		birthday?: string;
+		bio?: string;
+		profile_image?: string; 
+		email?: string;
 	};
+	onSuccess?: (updatedUser: any) => void;
+};
 
-	const handleImageChange = (e) => {
-		const file = e.target.files[0];
-		if (file) {
-			const reader = new FileReader();
+export default function AccountInfo({ initial = {}, onSuccess }: Props) {
+	const [firstName, setFirstName] = useState(initial.first_name || "");
+	const [lastName, setLastName] = useState(initial.last_name || "");
+	const [address, setAddress] = useState(initial.address || "");
+	const [contactNumber, setContactNumber] = useState(initial.contact_number || "");
+	const [birthday, setBirthday] = useState(initial.birthday || "");
+	const [bio, setBio] = useState(initial.bio || "");
+	const [file, setFile] = useState<File | null>(null);
+	const [preview, setPreview] = useState<string | null>(initial.profile_image || null);
 
-			reader.onloadend = () => {
-				setNewProduct({ ...newProduct, image: reader.result });
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState<string | null>(null);
+	const [success, setSuccess] = useState<string | null>(null);
+
+    const [openChangePassword, setOpenChangePassword] = useState(false);
+
+	const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+	function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+		const f = e.target.files?.[0] ?? null;
+		setFile(f);
+		if (f) {
+			const url = URL.createObjectURL(f);
+			setPreview(url);
+		}
+	}
+
+	async function handleSubmit(e: React.FormEvent) {
+		e.preventDefault();
+		setError(null);
+		setSuccess(null);
+
+		// Basic validation
+		if (!firstName.trim() || !lastName.trim()) {
+			setError("First and Last name are required.");
+			return;
+		}
+
+		setLoading(true);
+		try {
+			const payload: UpdateProfilePayload = {
+				first_name: firstName,
+				last_name: lastName,
+				address,
+				contact_number: contactNumber,
+				birthday,
+				bio,
+				profile_image: file ?? undefined,
 			};
 
-			reader.readAsDataURL(file); // base64
+			const updated = await updateProfile(payload);
+			setSuccess("Profile updated successfully.");
+			onSuccess?.(updated);
+			// update preview from returned data
+			if (updated.profile_image) setPreview(updated.profile_image);
+		} catch (err: any) {
+			console.error(err);
+			setError(err?.response?.data?.detail || err.message || "Update failed");
+		} finally {
+			setLoading(false);
+			// revoke object URL after some time to free memory if created
+			// if (file) URL.revokeObjectURL(preview || "");
 		}
-	};
+	}
 
 	return (
-		<div
-			className='bg-gray-800 shadow-lg rounded-lg p-8 mb-8 max-w-xl mx-auto'
-		>
-			<h2 className='text-2xl font-semibold mb-6 text-emerald-300'>Create New Product</h2>
+		<div>
+			<form onSubmit={handleSubmit} className="max-w-2xl mx-auto bg-white p-6 rounded shadow">
+				<h2 className="text-xl font-semibold mb-4">Edit Profile</h2>
 
-			<form onSubmit={handleSubmit} className='space-y-4'>
-				<div>
-					<label htmlFor='name' className='block text-sm font-medium text-gray-300'>
-						Product Name
-					</label>
-					<input
-						type='text'
-						id='name'
-						name='name'
-						value={newProduct.name}
-						onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-						className='mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2
-						 px-3 text-white focus:outline-none focus:ring-2
-						focus:ring-emerald-500 focus:border-emerald-500'
-						required
-					/>
+				{error && <div className="mb-3 text-red-600">{error}</div>}
+				{success && <div className="mb-3 text-green-600">{success}</div>}
+
+				<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+					<div>
+						<label className="block text-sm font-medium mb-1">First name</label>
+						<input value={firstName} onChange={(e) => setFirstName(e.target.value)} className="w-full border p-2 rounded" />
+					</div>
+
+					<div>
+						<label className="block text-sm font-medium mb-1">Last name</label>
+						<input value={lastName} onChange={(e) => setLastName(e.target.value)} className="w-full border p-2 rounded" />
+					</div>
+
+					<div className="sm:col-span-2">
+						<label className="block text-sm font-medium mb-1">Address</label>
+						<input value={address} onChange={(e) => setAddress(e.target.value)} className="w-full border p-2 rounded" />
+					</div>
+
+					<div>
+						<label className="block text-sm font-medium mb-1">Contact number</label>
+						<input value={contactNumber} onChange={(e) => setContactNumber(e.target.value)} className="w-full border p-2 rounded" />
+					</div>
+
+					<div>
+						<label className="block text-sm font-medium mb-1">Birthday</label>
+						<input type="date" value={birthday} onChange={(e) => setBirthday(e.target.value)} className="w-full border p-2 rounded" />
+					</div>
+
+					<div className="sm:col-span-2">
+						<label className="block text-sm font-medium mb-1">Bio</label>
+						<textarea value={bio} onChange={(e) => setBio(e.target.value)} className="w-full border p-2 rounded" rows={4} />
+					</div>
+
+					<div className="sm:col-span-2 flex items-center gap-4">
+						<div>
+							<label className="block text-sm font-medium mb-1">Profile Image</label>
+							<div className="flex items-center gap-3">
+								<button type="button" onClick={() => fileInputRef.current?.click()} className="px-3 py-2 bg-gray-100 border rounded">Choose file</button>
+								<input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
+								<span className="text-sm text-gray-500">{file?.name ?? (preview ? "Current image" : "No image")}</span>
+							</div>
+						</div>
+
+						{preview && (
+							<img src={preview} alt="preview" className="w-20 h-20 rounded-full object-cover border" />
+						)}
+					</div>
 				</div>
 
-				<div>
-					<label htmlFor='description' className='block text-sm font-medium text-gray-300'>
-						Description
-					</label>
-					<textarea
-						id='description'
-						name='description'
-						value={newProduct.description}
-						onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
-						// rows= '3'
-						className='mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm
-						 py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 
-						 focus:border-emerald-500'
-						required
-					/>
-				</div>
+				<div className="mt-6 flex items-center justify-between">
+					<button type="submit" disabled={loading} className="px-4 py-2 bg-indigo-600 text-white rounded">
+						{loading ? "Saving..." : "Save changes"}
+					</button>
 
-				<div>
-					<label htmlFor='price' className='block text-sm font-medium text-gray-300'>
-						Price
-					</label>
-					<input
-						type='number'
-						id='price'
-						name='price'
-						value={newProduct.price}
-						onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
-						step='0.01'
-						className='mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm 
-						py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500
-						 focus:border-emerald-500'
-						required
-					/>
+					<button type="button" onClick={() => {
+						// reset to initial values
+						setFirstName(initial.first_name || "");
+						setLastName(initial.last_name || "");
+						setAddress(initial.address || "");
+						setContactNumber(initial.contact_number || "");
+						setBirthday(initial.birthday || "");
+						setBio(initial.bio || "");
+						setFile(null);
+						setPreview(initial.profile_image || null);
+					}} className="px-3 py-2 border rounded bg-white">
+						Reset
+					</button>
 				</div>
-				<div className='mt-1 flex items-center'>
-					<input type='file' id='image' className='sr-only' accept='image/*' onChange={handleImageChange} />
-					<label
-						htmlFor='image'
-						className='cursor-pointer bg-gray-700 py-2 px-3 border border-gray-600 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-300 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500'
-					>
-						Upload Image
-					</label>
-					{newProduct.image && <span className='ml-3 text-sm text-gray-400'>Image uploaded </span>}
-				</div>
-
-				<button
-					type='submit'
-					className='w-full flex justify-center py-2 px-4 border border-transparent rounded-md 
-					shadow-sm text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 
-					focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:opacity-50'
-					disabled={loading}
-				>
-					{loading ? (
-						<>
-							Loading...
-						</>
-					) : (
-						<>
-							Create Product
-						</>
-					)}
-				</button>
 			</form>
-		</div>
+      <button type="button" onClick={() => setOpenChangePassword(true)} className="px-3 py-2 border rounded bg-white">
+        Change password
+      </button>
+            {openChangePassword && (
+        <ChangePasswordModal
+          onClose={() => setOpenChangePassword(false)}
+          onSuccess={(msg) => {
+          //show toast or update UI
+            console.log("Password changed:", msg);
+          }}
+        />
+      )}
+		</div >
 	);
 }
-
-export default AccountInfo

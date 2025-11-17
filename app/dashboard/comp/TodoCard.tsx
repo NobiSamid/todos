@@ -11,8 +11,8 @@ export default function TodoCard({
   onDelete,
 }: {
   todo: Todo;
-  onUpdate: (updated: Todo) => void;   // ✔ FIXED
-  onDelete: (id: number) => void;      // ✔ FIXED
+  onUpdate: (updated: Todo) => void;   // FIXED
+  onDelete: (id: number) => void;      //  FIXED
 }) {
   const { id, title, description, priority, is_completed, todo_date } = todo;
   const [openEdit, setOpenEdit] = useState(false);
@@ -37,7 +37,7 @@ export default function TodoCard({
     try {
       await deleteTodo(id);
       setShowConfirm(false);
-      onDelete(id);              // ✔ MUST PASS ID
+      onDelete(id);              // MUST PASS ID
     } catch (err) {
       console.error(err);
       alert("Delete failed");
@@ -96,7 +96,7 @@ export default function TodoCard({
         <EditTodoModal
           todo={todo}
           onClose={() => setOpenEdit(false)}
-          onSuccess={(updatedTodo) => onUpdate(updatedTodo)}   // ✔ pass updated todo
+          onSuccess={(updatedTodo) => onUpdate(updatedTodo)}   //  pass updated todo
         />
       )}
 

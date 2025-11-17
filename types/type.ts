@@ -17,6 +17,16 @@ export type LoginResponse = {
   refresh: string;
 };
 
+export type UpdateProfilePayload = {
+  first_name?: string;
+  last_name?: string;
+  address?: string;
+  contact_number?: string;
+  birthday?: string; // YYYY-MM-DD
+  bio?: string;
+  profile_image?: File | null;
+};
+
 
 export type Todo = {
   id: number;

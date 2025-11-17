@@ -1,9 +1,9 @@
 "use client";
 
 import useAuth from "@/hooks/useAuth";
-import { clearTokens } from "@/services/auth";
+import { clearTokens, getProfile } from "@/services/auth";
 import dynamic from "next/dynamic";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AccountInfo from "./comp/AccountInfo";
 import { useRouter } from "next/navigation";
 
@@ -15,7 +15,11 @@ export default function Sample() {
 
 	const router = useRouter();
 	const [activeTab, setActiveTab] = useState<"todo" | "account">("todo");
-	
+	const [user, setUser] = useState<any | null>(null);
+
+	const [loadingUser, setLoadingUser] = useState<boolean>(true);
+  const [userError, setUserError] = useState<string | null>(null);
+
 	useAuth()
 	
 	function logout() {
@@ -29,6 +33,63 @@ export default function Sample() {
 		day: "numeric",
 	});
 
+
+	// for account info
+  useEffect(() => {
+    let mounted = true;
+    setLoadingUser(true);
+    setUserError(null);
+
+    async function fetchProfile() {
+      try {
+        const data = await getProfile();
+        if (!mounted) return;
+        setUser(data);
+      } catch (err: any) {
+        console.error("profile fetch:", err);
+        // handle 401 -> force logout and redirect
+        const status = err?.response?.status;
+        if (status === 401 || err?.response?.data?.detail === "Authentication credentials were not provided.") {
+          clearTokens();
+          router.replace("/login");
+          return;
+        }
+        setUserError(err?.response?.data?.detail || err.message || "Failed to load profile");
+      } finally {
+        if (mounted) setLoadingUser(false);
+      }
+    }
+
+    fetchProfile();
+
+    return () => {
+      mounted = false;
+    };
+  }, [router]);
+
+	if (!user) return <div>Loading...</div>;
+
+	  if (loadingUser) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-gray-600">Loading profile…</div>
+      </div>
+    );
+  }
+
+  if (userError) {
+    return (
+      <div className="p-6">
+        <div className="text-red-600 mb-4">Error: {userError}</div>
+        <button onClick={() => router.refresh()} className="px-3 py-2 bg-indigo-600 text-white rounded">Retry</button>
+      </div>
+    );
+  }
+
+	const profileImage = user?.profile_image || "/images/avatar-placeholder.jpg"; // add a local placeholder file to public/images
+  const displayName = `${user?.first_name ?? ""} ${user?.last_name ?? ""}`.trim() || "Your Name";
+  const email = user?.email ?? "no-email@example.com";
+
 	return (
 		<div className="flex h-screen w-full">
 
@@ -39,12 +100,17 @@ export default function Sample() {
 				<div>
 					{/* Profile */}
 					<div className="flex flex-col items-center">
-						<img
-							alt="Profile"
-							className="rounded-full w-24 h-24 border-2 border-white"
-						/>
-						<h2 className="text-xl font-semibold mt-4">Your Name</h2>
-						<p className="text-sm text-gray-200">your@email.com</p>
+            <img
+              src={profileImage}
+              alt={displayName || "Profile"}
+              className="rounded-full w-24 h-24 border-2 border-white object-cover"
+              onError={(e) => {
+                // fallback if image URL returns 404
+                (e.target as HTMLImageElement).src = "/images/avatar-placeholder.png";
+              }}
+            />
+            <h2 className="text-xl font-semibold mt-4">{displayName}</h2>
+            <p className="text-sm text-gray-200">{email}</p>
 					</div>
 
 					{/* Dashboard Label */}
@@ -84,7 +150,7 @@ export default function Sample() {
 
 				{/* NAVBAR (NAME + DATE) */}
 				<div className="flex justify-between items-center mb-8">
-					<h1 className="text-2xl font-bold text-gray-800">Your Name</h1>
+					<h1 className="text-2xl font-bold text-gray-800">Company name</h1>
 					<p className="text-gray-600">{today}</p>
 				</div>
 
@@ -92,7 +158,6 @@ export default function Sample() {
 				<div>
 					{activeTab === "todo" ? (
 						<div>
-							<h2 className="text-xl font-semibold mb-4">Todo List</h2>
 							{/* TODO CONTENT HERE */}
 							<TodoList initialFilterCompleted={true} />
 						</div>
@@ -100,8 +165,7 @@ export default function Sample() {
 						<div>
 							<h2 className="text-xl font-semibold mb-4">Account Information</h2>
 							{/* ACCOUNT INFO HERE */}
-							<p className="text-gray-600">Your account details will appear here.</p>
-							<AccountInfo />
+							<AccountInfo initial={user} onSuccess={(updated)=> setUser(updated)} />
 						</div>
 					)}
 				</div>

@@ -31,12 +31,12 @@ const TodoList = ({ initialFilterCompleted = true }: { initialFilterCompleted?: 
     fetchTodos();
   }, [initialFilterCompleted]);
 
-  // 🔥 Instant Delete
+  //  Instant Delete
   const handleDeleteTodo = (id: number) => {
     setTodos(prev => prev.filter(todo => todo.id !== id));
   };
 
-  // 🔥 Instant Update
+  //  Instant Update
   const handleUpdateTodo = (updated: Todo) => {
     setTodos(prev =>
       prev.map(todo =>
@@ -60,15 +60,23 @@ const TodoList = ({ initialFilterCompleted = true }: { initialFilterCompleted?: 
       </div>
 
       {todos.length === 0 ? (
-        <div className="p-4 text-gray-600">No todos found.</div>
+        <div className="p-4 text-gray-600">
+          <h1>no task to do</h1>
+          <button
+            onClick={() => setOpenModal(true)}
+            className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+          >
+            + New Todo
+          </button>
+        </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {todos.map((t) => (
             <TodoCard
               key={t.id}
               todo={t}
-              onDelete={handleDeleteTodo}     
-              onUpdate={handleUpdateTodo}     
+              onDelete={handleDeleteTodo}
+              onUpdate={handleUpdateTodo}
             />
           ))}
         </div>

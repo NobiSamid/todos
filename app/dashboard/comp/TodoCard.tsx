@@ -51,7 +51,7 @@ export default function TodoCard({
 
   return (
     <>
-      <article className="border rounded-xl p-4 shadow-md bg-white relative">
+      <article className="border rounded-xl p-4 shadow-md gap-4 mx-4 my-4 bg-white relative">
         <div className="flex items-start justify-between">
           <h3 className={`text-lg font-semibold ${is_completed ? "line-through text-gray-400" : ""}`}>
             {title}
@@ -69,7 +69,7 @@ export default function TodoCard({
             {is_completed ? (
               <span className="text-green-600 font-medium">Completed</span>
             ) : (
-              <span className="text-orange-600 font-medium">Pending</span>
+              <span className="text-orange-600 font-medium">Due</span>
             )}
           </div>
         </div>

@@ -185,7 +185,6 @@ export default function Sample() {
 			{/* RIGHT MAIN AREA */}
 			<main className="w-[1100px] bg-gray-100 overflow-hidden">
 
-				{/* NAVBAR (NAME + DATE) */}
 				<div className="    flex flex-row 
     			items-center 
     			justify-between 

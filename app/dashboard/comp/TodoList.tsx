@@ -131,28 +131,37 @@ const TodoList = ({ initialFilterCompleted = true }: { initialFilterCompleted?: 
         w-[1100px] 
         h-[88px] 
         ml-[0px]
-        pl-[80px] 
+        pl-[10px] 
         pr-[80px] 
        bg-white overflow-hidden">
         <h1 className="text-3xl font-bold">TODO</h1>
 
         <button
           onClick={() => setOpenModal(true)}
-          className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+          className="bg-indigo-600 text-white px-4 mr-6 py-2 rounded hover:bg-indigo-700"
         >
           + New Todo
         </button>
       </div>
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="flex flex-row 
+    			items-center 
+    			justify-between 
+    			w-[1100px] 
+    			h-[88px] 
+    			ml-[0px]
+    			pl-[10px] 
+    			pr-[80px] 
+          gap-80
+    		bg-white overflow-hidden">
         <input
           type="text"
           placeholder="Search todos by title..."
-          className="border px-3 py-2 rounded w-full sm:w-1/2"
+          className="border px-3 py-2 rounded w-4/5"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
         <select
-          className="border px-3 py-2 rounded w-full sm:w-48"
+          className="border px-3 py-2 rounded mr-6"
           value={filterType}
           onChange={(e) => setFilterType(e.target.value)}
         >

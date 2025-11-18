@@ -4,7 +4,7 @@ import Dashboard from "./dashboard/Dashboard";
 
 export default function Home() {
   return (
-   <main>
+   <main className=" h-auto" >
     <div>
       <Dashboard />
     </div>

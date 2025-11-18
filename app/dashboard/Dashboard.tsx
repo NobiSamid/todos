@@ -118,10 +118,10 @@ export default function Sample() {
 	}
 
 	return (
-		<div className="flex h-screen w-full">
+		<div className="flex w-full h-auto">
 
 			{/* LEFT SIDEBAR */}
-			<aside className="w-1/4 bg-[#0D224A] text-white p-6 flex flex-col justify-between">
+			<aside className="w-[340px] h-screen bg-[#0D224A] text-white p-6 flex flex-col justify-between">
 
 				{/* TOP PART */}
 				<div>
@@ -183,12 +183,21 @@ export default function Sample() {
 			</aside>
 
 			{/* RIGHT MAIN AREA */}
-			<main className="w-3/4 bg-gray-100 p-8 overflow-y-auto">
+			<main className="w-[1100px] bg-gray-100 overflow-hidden">
 
 				{/* NAVBAR (NAME + DATE) */}
-				<div className="flex justify-between items-center mb-8">
+				<div className="    flex flex-row 
+    			items-center 
+    			justify-between 
+    			gap-[664px]
+    			w-[1100px] 
+    			h-[88px] 
+    			ml-[0px]
+    			pl-[80px] 
+    			pr-[80px] 
+    		bg-white overflow-hidden">
 					<h1 className="text-2xl font-bold text-gray-800">Company name</h1>
-					<p className="text-gray-600">{today}</p>
+					<p className="text-gray-600 bg-white p-0 m-0">{today}</p>
 				</div>
 
 				{/* MAIN CONTENT */}
@@ -200,7 +209,6 @@ export default function Sample() {
 						</div>
 					) : (
 						<div>
-							<h2 className="text-xl font-semibold mb-4">Account Information</h2>
 							{/* ACCOUNT INFO HERE */}
 							<AccountInfo initial={user} onSuccess={(updated) => setUser(updated)} />
 						</div>

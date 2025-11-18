@@ -124,7 +124,16 @@ const TodoList = ({ initialFilterCompleted = true }: { initialFilterCompleted?: 
 
   return (
     <div className="relative">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-row 
+        items-center 
+        justify-between 
+        gap-[664px]
+        w-[1100px] 
+        h-[88px] 
+        ml-[0px]
+        pl-[80px] 
+        pr-[80px] 
+       bg-white overflow-hidden">
         <h1 className="text-3xl font-bold">TODO</h1>
 
         <button

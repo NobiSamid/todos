@@ -50,13 +50,31 @@ const token = typeof window !== "undefined"
 // }
 
 
+// export async function updateTodo(id: number, payload: any) {
+//   const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
+//   const res = await api.patch(`/api/todos/${id}/`, payload, {
+//     headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+//   });
+//   return res.data;
+// }
+
 export async function updateTodo(id: number, payload: any) {
   const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
-  const res = await api.patch(`/api/todos/${id}/`, payload, {
+
+  const formData = new FormData();
+  Object.keys(payload).forEach(key => {
+    if (payload[key] !== undefined && payload[key] !== null) {
+      formData.append(key, payload[key]);
+    }
+  });
+
+  const res = await api.patch(`/api/todos/${id}/`, formData, {
     headers: token ? { Authorization: `Bearer ${token}` } : undefined,
   });
+
   return res.data;
 }
+
 
 export async function deleteTodo(id: number) {
   const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;

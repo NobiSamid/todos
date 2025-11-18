@@ -1,17 +1,27 @@
 "use client";
 
-import { getTodos } from "@/services/TodoApi";
+import { getTodos, updateTodo } from "@/services/TodoApi";
 import { Todo } from "@/types/type";
 import React, { useEffect, useState } from "react";
 import TodoCard from "./TodoCard";
 import NewTodoModal from "@/components/TodoModal";
-import { Router } from "next/router";
+
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult
+} from "@hello-pangea/dnd";
+
 
 const TodoList = ({ initialFilterCompleted = true }: { initialFilterCompleted?: boolean }) => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [openModal, setOpenModal] = useState(false);
+  const [filteredTodos, setFilteredTodos] = useState<Todo[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterType, setFilterType] = useState("");
 
   async function fetchTodos() {
     setLoading(true);
@@ -31,6 +41,37 @@ const TodoList = ({ initialFilterCompleted = true }: { initialFilterCompleted?: 
     fetchTodos();
   }, [initialFilterCompleted]);
 
+  useEffect(() => {
+    let result = [...todos];
+
+    const today = new Date();
+
+    // Filter by deadline
+    if (filterType) {
+      result = result.filter(todo => {
+        if (!todo.todo_date) return false;
+
+        const deadline = new Date(todo.todo_date);
+        const diffDays = Math.ceil((deadline.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
+        if (filterType === "today") return diffDays === 0;
+        if (filterType === "5days") return diffDays <= 5;
+        if (filterType === "10days") return diffDays <= 10;
+        if (filterType === "30days") return diffDays <= 30;
+      });
+    }
+
+    // Search filter
+    if (searchQuery.trim()) {
+      result = result.filter(todo =>
+        todo.title.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    setFilteredTodos(result);
+  }, [searchQuery, filterType, todos]);
+
+
   //  Instant Delete
   const handleDeleteTodo = (id: number) => {
     setTodos(prev => prev.filter(todo => todo.id !== id));
@@ -45,12 +86,47 @@ const TodoList = ({ initialFilterCompleted = true }: { initialFilterCompleted?: 
     );
   };
 
+  function reorder(list: Todo[], startIndex: number, endIndex: number) {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+
+    return result.map((item, index) => ({
+      ...item,
+      position: index + 1,
+    }));
+  }
+
+  async function handleDragEnd(result: DropResult) {
+    if (!result.destination) return;
+
+    // UI reorder
+    const newOrder = reorder(filteredTodos, result.source.index, result.destination.index);
+    setFilteredTodos(newOrder);
+
+    // sync with backend
+    try {
+      await Promise.all(
+        newOrder.map(todo =>
+          updateTodo(todo.id, { position: todo.position })
+        )
+      );
+    } catch (err) {
+      console.error("Failed to update order:", err);
+    }
+  }
+
+
+
+
   if (loading) return <div className="p-4">Loading todos…</div>;
   if (error) return <div className="p-4 text-red-600">Error: {error}</div>;
 
   return (
     <div className="relative">
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold">TODO</h1>
+
         <button
           onClick={() => setOpenModal(true)}
           className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
@@ -58,10 +134,37 @@ const TodoList = ({ initialFilterCompleted = true }: { initialFilterCompleted?: 
           + New Todo
         </button>
       </div>
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <input
+          type="text"
+          placeholder="Search todos by title..."
+          className="border px-3 py-2 rounded w-full sm:w-1/2"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <select
+          className="border px-3 py-2 rounded w-full sm:w-48"
+          value={filterType}
+          onChange={(e) => setFilterType(e.target.value)}
+        >
+          <option value="">Filter by</option>
+          <option value="today">Deadline Today</option>
+          <option value="5days">Expires in 5 Days</option>
+          <option value="10days">Expires in 10 Days</option>
+          <option value="30days">Expires in 30 Days</option>
+        </select>
+      </div>
 
-      {todos.length === 0 ? (
+      {openModal && (
+        <NewTodoModal
+          onClose={() => setOpenModal(false)}
+          onSuccess={fetchTodos}
+        />
+      )}
+
+      {filteredTodos.length === 0 ? (
         <div className="p-4 text-gray-600">
-          <h1>no task to do</h1>
+          <h1>No matching task found</h1>
           <button
             onClick={() => setOpenModal(true)}
             className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
@@ -70,23 +173,38 @@ const TodoList = ({ initialFilterCompleted = true }: { initialFilterCompleted?: 
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {todos.map((t) => (
-            <TodoCard
-              key={t.id}
-              todo={t}
-              onDelete={handleDeleteTodo}
-              onUpdate={handleUpdateTodo}
-            />
-          ))}
-        </div>
-      )}
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <Droppable droppableId="todoList">
+            {(provided) => (
+              <div
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+              >
+                {filteredTodos.map((t, index) => (
+                  <Draggable key={t.id} draggableId={String(t.id)} index={index}>
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        <TodoCard
+                          todo={t}
+                          onDelete={handleDeleteTodo}
+                          onUpdate={handleUpdateTodo}
+                        />
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
 
-      {openModal && (
-        <NewTodoModal
-          onClose={() => setOpenModal(false)}
-          onSuccess={fetchTodos}
-        />
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+
       )}
     </div>
   );

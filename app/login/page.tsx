@@ -84,8 +84,8 @@ export default function LogIn() {
           {loading ? "Signing in..." : "Sign in"}
         </button>
       </form>
-            <p className="mt-4 text-center">
-        Don`&apos`t have any account?{" "}
+      <p className="mt-4 text-center">
+        Don't have any account?{" "}
         <Link href="/signup" className="text-indigo-600 underline">
           Sign up
         </Link>

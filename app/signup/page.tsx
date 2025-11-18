@@ -57,7 +57,8 @@ export default function SignUp() {
 
   return (
     <main className="max-w-md mx-auto p-6">
-      <h1 className="text-2xl font-semibold mb-4">Create account</h1>
+      <h1 className="text-2xl font-semibold mb-4">Create your account</h1>
+      <p>Start managing your tasks efficiently</p>
 
       {error && <div className="mb-2 text-red-600">{error}</div>}
       {success && <div className="mb-2 text-green-600">{success}</div>}

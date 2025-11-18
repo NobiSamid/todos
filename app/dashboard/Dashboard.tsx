@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
 import AccountInfo from "./comp/AccountInfo";
 import { useRouter } from "next/navigation";
+import UserInfoModal from "@/components/UserInfoModal";
 
 
 const TodoList = dynamic(() => import("./comp/TodoList"), { ssr: false });
@@ -18,10 +19,15 @@ export default function Sample() {
 	const [user, setUser] = useState<any | null>(null);
 
 	const [loadingUser, setLoadingUser] = useState<boolean>(true);
-  const [userError, setUserError] = useState<string | null>(null);
+	const [userError, setUserError] = useState<string | null>(null);
+
+	const [showInfoModal, setShowInfoModal] = useState(false);
+	const [infoLoading, setInfoLoading] = useState(false);
+	const [infoError, setInfoError] = useState<string | null>(null);
+	const [infoUser, setInfoUser] = useState<any | null>(null);
 
 	useAuth()
-	
+
 	function logout() {
 		clearTokens();
 		router.push("/login");
@@ -35,82 +41,113 @@ export default function Sample() {
 
 
 	// for account info
-  useEffect(() => {
-    let mounted = true;
-    setLoadingUser(true);
-    setUserError(null);
+	useEffect(() => {
+		let mounted = true;
+		setLoadingUser(true);
+		setUserError(null);
 
-    async function fetchProfile() {
-      try {
-        const data = await getProfile();
-        if (!mounted) return;
-        setUser(data);
-      } catch (err: any) {
-        console.error("profile fetch:", err);
-        // handle 401 -> force logout and redirect
-        const status = err?.response?.status;
-        if (status === 401 || err?.response?.data?.detail === "Authentication credentials were not provided.") {
-          clearTokens();
-          router.replace("/login");
-          return;
-        }
-        setUserError(err?.response?.data?.detail || err.message || "Failed to load profile");
-      } finally {
-        if (mounted) setLoadingUser(false);
-      }
-    }
+		async function fetchProfile() {
+			try {
+				const data = await getProfile();
+				if (!mounted) return;
+				setUser(data);
+			} catch (err: any) {
+				console.error("profile fetch:", err);
+				// handle 401 -> force logout and redirect
+				const status = err?.response?.status;
+				if (status === 401 || err?.response?.data?.detail === "Authentication credentials were not provided.") {
+					clearTokens();
+					router.replace("/login");
+					return;
+				}
+				setUserError(err?.response?.data?.detail || err.message || "Failed to load profile");
+			} finally {
+				if (mounted) setLoadingUser(false);
+			}
+		}
 
-    fetchProfile();
+		fetchProfile();
 
-    return () => {
-      mounted = false;
-    };
-  }, [router]);
+		return () => {
+			mounted = false;
+		};
+	}, [router]);
 
 	if (!user) return <div>Loading...</div>;
 
-	  if (loadingUser) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-gray-600">Loading profile…</div>
-      </div>
-    );
-  }
+	if (loadingUser) {
+		return (
+			<div className="flex items-center justify-center h-screen">
+				<div className="text-gray-600">Loading profile…</div>
+			</div>
+		);
+	}
 
-  if (userError) {
-    return (
-      <div className="p-6">
-        <div className="text-red-600 mb-4">Error: {userError}</div>
-        <button onClick={() => router.refresh()} className="px-3 py-2 bg-indigo-600 text-white rounded">Retry</button>
-      </div>
-    );
-  }
+	if (userError) {
+		return (
+			<div className="p-6">
+				<div className="text-red-600 mb-4">Error: {userError}</div>
+				<button onClick={() => router.refresh()} className="px-3 py-2 bg-indigo-600 text-white rounded">Retry</button>
+			</div>
+		);
+	}
 
 	const profileImage = user?.profile_image || "/images/avatar-placeholder.jpg"; // add a local placeholder file to public/images
-  const displayName = `${user?.first_name ?? ""} ${user?.last_name ?? ""}`.trim() || "Your Name";
-  const email = user?.email ?? "no-email@example.com";
+	const displayName = `${user?.first_name ?? ""} ${user?.last_name ?? ""}`.trim() || "Your Name";
+	const email = user?.email ?? "no-email@example.com";
+
+	async function openInfo() {
+		setInfoError(null);
+		setInfoLoading(true);
+		try {
+			const data = await getProfile();
+			setInfoUser(data);
+			setShowInfoModal(true);
+		} catch (err: any) {
+			console.error("getProfile:", err);
+			const status = err?.response?.status;
+			if (status === 401) { // optional: force logout
+				clearTokens();
+				router.replace("/login");
+				return;
+			}
+			setInfoError(err?.response?.data?.detail || err.message || "Failed to load user info");
+		} finally {
+			setInfoLoading(false);
+		}
+	}
 
 	return (
 		<div className="flex h-screen w-full">
 
 			{/* LEFT SIDEBAR */}
-			<aside className="w-1/4 bg-[royalblue] text-white p-6 flex flex-col justify-between">
+			<aside className="w-1/4 bg-[#0D224A] text-white p-6 flex flex-col justify-between">
 
 				{/* TOP PART */}
 				<div>
 					{/* Profile */}
 					<div className="flex flex-col items-center">
-            <img
-              src={profileImage}
-              alt={displayName || "Profile"}
-              className="rounded-full w-24 h-24 border-2 border-white object-cover"
-              onError={(e) => {
-                // fallback if image URL returns 404
-                (e.target as HTMLImageElement).src = "/images/avatar-placeholder.png";
-              }}
-            />
-            <h2 className="text-xl font-semibold mt-4">{displayName}</h2>
-            <p className="text-sm text-gray-200">{email}</p>
+						<img
+							src={profileImage}
+							alt={displayName || "Profile"}
+							className="rounded-full w-24 h-24 border-2 border-white object-cover"
+							onError={(e) => {
+								// fallback if image URL returns 404
+								(e.target as HTMLImageElement).src = "/images/avatar-placeholder.png";
+							}}
+						/>
+						<div className="flex items-center gap-3">
+							<h2 className="text-xl font-semibold mt-4">{displayName}</h2>
+							<button
+								onClick={openInfo}
+								title="View profile details"
+								className="ml-2 inline-flex items-center justify-center w-7 h-7 rounded-b-lg bg-white/20 hover:bg-white/30 text-white text-sm"
+							>
+								info
+							</button>
+							{infoLoading && <span className="ml-2 text-sm text-gray-500">Loading…</span>}
+						</div>
+						<p className="text-sm text-gray-200">{email}</p>
 					</div>
 
 					{/* Dashboard Label */}
@@ -139,7 +176,7 @@ export default function Sample() {
 				</div>
 
 				{/* Logout Button */}
-				<button onClick={()=> logout()} className="bg-red-500 hover:bg-red-600 text-white py-2 rounded mt-6">
+				<button onClick={() => logout()} className="bg-red-500 hover:bg-red-600 text-white py-2 rounded mt-6">
 					Log Out
 				</button>
 
@@ -165,12 +202,22 @@ export default function Sample() {
 						<div>
 							<h2 className="text-xl font-semibold mb-4">Account Information</h2>
 							{/* ACCOUNT INFO HERE */}
-							<AccountInfo initial={user} onSuccess={(updated)=> setUser(updated)} />
+							<AccountInfo initial={user} onSuccess={(updated) => setUser(updated)} />
 						</div>
 					)}
 				</div>
 
 			</main>
+			{showInfoModal && infoUser && (
+				<UserInfoModal
+					user={infoUser}
+					onClose={() => setShowInfoModal(false)}
+				/>
+			)}
+
+			{/* optionally show an inline error if fetching info failed */}
+			{infoError && <div className="text-sm text-red-600 mt-2">{infoError}</div>}
+
 		</div>
 	);
 }

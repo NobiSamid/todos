@@ -105,7 +105,7 @@ export default function TodoCard({
       )}
 
       {showConfirm && (
-        <div className="fixed inset-0 flex items-end justify-center z-50 pointer-events-none">
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="mb-8 bg-white p-4 border rounded-lg shadow-lg pointer-events-auto w-80 text-center">
             <p className="mb-3 font-medium">Are you sure you want to delete this task?</p>
             <div className="flex justify-center gap-4">

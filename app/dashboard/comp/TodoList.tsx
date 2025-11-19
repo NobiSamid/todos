@@ -12,6 +12,7 @@ import {
   Draggable,
   DropResult
 } from "@hello-pangea/dnd";
+import { IconPlus } from "@tabler/icons-react";
 
 
 const TodoList = ({ initialFilterCompleted = true }: { initialFilterCompleted?: boolean }) => {
@@ -123,7 +124,7 @@ const TodoList = ({ initialFilterCompleted = true }: { initialFilterCompleted?: 
   if (error) return <div className="p-4 text-red-600">Error: {error}</div>;
 
   return (
-    <div className="relative">
+    <div className="relative w-full h-auto">
       <div className="flex flex-row 
         items-center 
         justify-between 
@@ -181,13 +182,13 @@ const TodoList = ({ initialFilterCompleted = true }: { initialFilterCompleted?: 
       )}
 
       {filteredTodos.length === 0 ? (
-        <div className="p-4 text-gray-600">
-          <h1>No matching task found</h1>
+        <div className="text-gray-600 flex w-full h-screen justify-center items-center">
+          <h1 className=" text-5xl">No todos yet</h1>
           <button
             onClick={() => setOpenModal(true)}
-            className="bg-indigo-300 text-white round-2xs px-4 py-2 rounded hover:bg-indigo-500"
+            className="bg-indigo-300 text-white m-6 rounded-full hover:bg-indigo-500"
           >
-            + New Todo
+            <IconPlus className=" rounded-full text-white m-8 " />
           </button>
         </div>
       ) : (

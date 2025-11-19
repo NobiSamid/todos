@@ -110,13 +110,11 @@ export default function AccountInfo({ initial = {}, onSuccess }: Props) {
         {error && <div className="mb-3 text-red-600">{error}</div>}
         {success && <div className="mb-3 text-green-600">{success}</div>}
         <div className="sm:col-span-2 w-2xs h-20 p-6 flex items-center gap-4 shadow-2xs rotate-0 opacity-100 rounded-[16px]">
-          <div>
-            <label className="block text-sm font-medium mb-1">Profile Image</label>
-            <div className="flex items-center gap-3">
-              <button type="button" onClick={() => fileInputRef.current?.click()} className="px-3 py-2 bg-gray-100 border rounded">Choose file</button>
-              <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
-              <span className="text-sm text-gray-500">{file?.name ?? (preview ? "Current image" : "No image")}</span>
-            </div>
+          <div className="flex items-center gap-2">
+            <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
+            <button type="button" onClick={() => fileInputRef.current?.click()} className="px-3 py-2 bg-gray-100 border rounded">Upload New Photo</button>
+            <span className="text-sm text-gray-500">{file?.name ?? (preview ? "Current image" : "No image")}</span>
+
           </div>
           {preview && (
             <img src={preview} alt="preview" className="w-20 h-20 rounded-full object-cover border" />

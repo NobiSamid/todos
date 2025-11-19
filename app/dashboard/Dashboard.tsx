@@ -193,7 +193,7 @@ export default function Sample() {
     			pl-[80px] 
     			pr-[80px] 
     		bg-white overflow-hidden">
-					<h1 className="text-2xl font-bold text-gray-800">Pioneer alpha</h1>
+					<h1 className="text-2xl font-bold text-balance text-gray-800">Pioneer alpha</h1>
 					<p className="text-gray-600 bg-white p-0 m-0">{today}</p>
 				</div>
 

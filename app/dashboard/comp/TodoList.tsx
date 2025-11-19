@@ -185,7 +185,7 @@ const TodoList = ({ initialFilterCompleted = true }: { initialFilterCompleted?: 
           <h1>No matching task found</h1>
           <button
             onClick={() => setOpenModal(true)}
-            className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+            className="bg-indigo-300 text-white round-2xs px-4 py-2 rounded hover:bg-indigo-500"
           >
             + New Todo
           </button>

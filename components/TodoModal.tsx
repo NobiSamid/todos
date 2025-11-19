@@ -42,7 +42,7 @@ export default function NewTodoModal({ onClose, onSuccess }: Props) {
 
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-white w-full max-w-md rounded-lg shadow-xl p-6 relative">
+      <div className="bg-white w-full max-w-md rounded-lg shadow-xl p-6 relative absolute w-[591px] h-[653px] p-10 gap-4 rounded-[16px] opacity-100">
 
         <h2 className="text-xl font-semibold mb-4">Create New Todo</h2>
 

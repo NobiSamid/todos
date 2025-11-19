@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import AccountInfo from "./comp/AccountInfo";
 import { useRouter } from "next/navigation";
 import UserInfoModal from "@/components/UserInfoModal";
+import { IconCapRounded, IconClipboardCheck, IconInfoCircle, IconLogout, IconUser } from "@tabler/icons-react";
 
 
 const TodoList = dynamic(() => import("./comp/TodoList"), { ssr: false });
@@ -92,7 +93,7 @@ export default function Sample() {
 		);
 	}
 
-	const profileImage = user?.profile_image || "/images/avatar-placeholder.jpg"; // add a local placeholder file to public/images
+	const profileImage = user?.profile_image || "/images/avatar-placeholder.jpg";
 	const displayName = `${user?.first_name ?? ""} ${user?.last_name ?? ""}`.trim() || "Your Name";
 	const email = user?.email ?? "no-email@example.com";
 
@@ -118,15 +119,15 @@ export default function Sample() {
 	}
 
 	return (
-		<div className="flex w-full h-auto">
+		<div className="flex w-full min-h-screen">
 
 			{/* LEFT SIDEBAR */}
-			<aside className="w-[340px] h-screen bg-[#0D224A] text-white p-6 flex flex-col justify-between">
+			<div className="w-[340px] h-auto bg-[#0D224A] text-white p-0 flex flex-col justify-between">
 
 				{/* TOP PART */}
 				<div>
 					{/* Profile */}
-					<div className="flex flex-col items-center">
+					<div className="flex flex-col items-center px-6 py-6">
 						<img
 							src={profileImage}
 							alt={displayName || "Profile"}
@@ -141,49 +142,46 @@ export default function Sample() {
 							<button
 								onClick={openInfo}
 								title="View profile details"
-								className="ml-2 inline-flex items-center justify-center w-7 h-7 rounded-b-lg bg-white/20 hover:bg-white/30 text-white text-sm"
+								className="items-center mt-6"
 							>
-								info
+								<IconInfoCircle className="hover:text-amber-300 rounded-2xl" />
 							</button>
 							{infoLoading && <span className="ml-2 text-sm text-gray-500">Loading…</span>}
 						</div>
 						<p className="text-sm text-gray-200">{email}</p>
 					</div>
 
-					{/* Dashboard Label */}
-					<h3 className="text-lg font-bold mt-10 mb-4">Dashboard</h3>
-
 					{/* Menu */}
-					<div className="flex flex-col space-y-2">
+					<div className="flex flex-col mt-8">
 						<button
 							onClick={() => setActiveTab("todo")}
-							className={`text-left p-2 rounded 
-								${activeTab === "todo" ? "bg-white text-blue-700" : "hover:bg-blue-500"}
+							className={`text-left p-2
+								${activeTab === "todo" ? "bg-gradient-to-r from-[#4c5f83] to-[#0D224A] text-white" : "hover:bg-[#28406d]"}
 							`}
 						>
-							Todo
+							<div className="flex px-6"><IconClipboardCheck /><p className="px-2">Todo</p></div>
 						</button>
 
 						<button
 							onClick={() => setActiveTab("account")}
-							className={`text-left p-2 rounded 
-								${activeTab === "account" ? "bg-white text-blue-700" : "hover:bg-blue-500"}
+							className={`text-left p-2 
+								${activeTab === "account" ? " bg-gradient-to-r from-[#4c5f83] to-[#0D224A] text-white" : "hover:bg-[#28406d]"}
 							`}
 						>
-							Account Info
+							<div className="flex px-6" ><IconUser /><p className="px-2">Account Info</p></div>
 						</button>
 					</div>
 				</div>
 
 				{/* Logout Button */}
-				<button onClick={() => logout()} className="bg-red-500 hover:bg-red-600 text-white py-2 rounded mt-6">
-					Log Out
+				<button onClick={() => logout()} className="mb-10 p-2 from-[#4c5f83] to-[#0D224A] text-white hover:bg-gradient-to-r">
+					<div className="flex px-6"><IconLogout /><p className="px-2">Log out</p></div>
 				</button>
 
-			</aside>
+			</div>
 
 			{/* RIGHT MAIN AREA */}
-			<main className="w-[1100px] bg-gray-100 overflow-hidden">
+			<div className="w-[1100px] h-auto bg-gray-100 overflow-hidden">
 
 				<div className="    flex flex-row 
     			items-center 
@@ -195,7 +193,7 @@ export default function Sample() {
     			pl-[80px] 
     			pr-[80px] 
     		bg-white overflow-hidden">
-					<h1 className="text-2xl font-bold text-gray-800">Company name</h1>
+					<h1 className="text-2xl font-bold text-gray-800">Pioneer alpha</h1>
 					<p className="text-gray-600 bg-white p-0 m-0">{today}</p>
 				</div>
 
@@ -214,7 +212,7 @@ export default function Sample() {
 					)}
 				</div>
 
-			</main>
+			</div>
 			{showInfoModal && infoUser && (
 				<UserInfoModal
 					user={infoUser}

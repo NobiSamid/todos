@@ -3,6 +3,7 @@
 import EditTodoModal from "@/components/EditTodoModal";
 import { deleteTodo } from "@/services/TodoApi";
 import { Todo } from "@/types/type";
+import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
 
 export default function TodoCard({
@@ -51,20 +52,19 @@ export default function TodoCard({
 
   return (
     <>
-      <article className="border rounded-xl p-4 shadow-md gap-4 mx-4 my-4 bg-white relative">
+      <article className="rounded-xl p-4 shadow-md gap-4 mx-4 my-4 bg-white relative">
         <div className="flex items-start justify-between">
           <h3 className={`text-lg font-semibold ${is_completed ? "line-through text-gray-400" : ""}`}>
             {title}
           </h3>
-          <span className={`px-2 py-1 text-xs font-medium rounded ${priorityBadge()}`}>
+          <span className={`px-2 py-1 text-xs rounded ${priorityBadge()}`}>
             {priority}
           </span>
         </div>
 
         {description && <p className="mt-2 text-sm text-gray-600">{description}</p>}
 
-        <div className="mt-3 flex items-center justify-between text-xs text-gray-500">
-          <div>{todo_date}</div>
+        <div className="mt-3 flex items-center text-xs text-gray-500">
           <div>
             {is_completed ? (
               <span className="text-green-600 font-medium">Completed</span>
@@ -72,6 +72,7 @@ export default function TodoCard({
               <span className="text-orange-600 font-medium">Due</span>
             )}
           </div>
+          <div className="p-4">{todo_date}</div>         
         </div>
 
         <div className="flex justify-between items-center gap-2 mt-4">
@@ -80,16 +81,16 @@ export default function TodoCard({
           <div className="flex gap-2">
             <button
               onClick={() => setOpenEdit(true)}
-              className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
+              className="p-1 rounded hover:bg-blue-300"
             >
-              Edit
+              <IconEdit className="text-blue-400 text-sm" />
             </button>
 
             <button
               onClick={() => setShowConfirm(true)}
-              className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600"
+              className="p-1 rounded hover:bg-red-300"
             >
-              Delete
+              <IconTrash className=" text-red-400 text-sm" />
             </button>
           </div>
         </div>
